@@ -14,3 +14,22 @@ node {
 	}
 }
 
+
+_____________
+
+node {
+	stage('Build'){
+		checkout([$class: 'GitSCM', 
+			branches: [[name: "origin/master"]], 
+			userRemoteConfigs: [[
+			url: 'https://github.com/dandu1008/pipeline-agent-dockerfile-filename.git']]
+		])
+
+		def myCustomUbuntuImage = docker.build("my-ubuntu:my-latest","--file ./docker/mycustomdocker ./docker")
+
+		myCustomUbuntuImage.inside {
+			sh 'cat /etc/lsb-release'
+		}
+	}
+}
+
