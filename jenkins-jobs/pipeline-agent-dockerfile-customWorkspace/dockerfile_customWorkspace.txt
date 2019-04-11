@@ -10,6 +10,7 @@ pipeline {
                 url: 'https://github.com/pipelineascodecourse/pipeline-agent-dockerfile.git']],
 				extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'checkout-directory']]
 				])
+  // this extensions tells to Jenkins to checkout code within 'checkout-directory' in default workspace directory
             }
         }
         stage('dockerfile'){            
