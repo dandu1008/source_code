@@ -25,3 +25,37 @@ pipeline {
     }
 }
 
+____________________
+
+pipeline {
+    agent none
+    stages {
+        stage('Checkout') {
+            agent {
+                node {
+                    label 'docker'
+                }
+            }
+            steps {
+                
+                checkout([$class: 'GitSCM', 
+				branches: [[name: "origin/master"]], 
+				userRemoteConfigs: [[
+                url: 'https://github.com/dandu1008/pipeline-agent-dockerfile-filename.git']]
+				])
+            }
+        }
+        stage('dockerfile'){            
+            agent {
+                    dockerfile {
+                        dir 'docker'
+                        filename 'mycustomdocker'
+                    }
+            }
+            steps{
+                sh 'cat /etc/lsb-release'			
+            }
+        }
+    }
+}
+
