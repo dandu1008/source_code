@@ -13,3 +13,31 @@ pipeline {
         }
     }
 }
+
+_______________
+
+@Library("pipeline-shared-lib") _
+@Grab('org.codehaus.groovy:groovy-all:2.4.13')
+import groovy.json.JsonOutput 
+import groovy.json.JsonSlurper
+
+pipeline {
+    agent {
+        node 'master'
+    }
+    stages{
+        stage('Build'){
+            steps{			
+                script{
+                    def request = libraryResource 'com/acceleratedskillup/request.json'
+                    echo request
+                    def output = JsonOutput.toJson(request)
+                    echo output
+                    def jsonSlurper = new JsonSlurper()
+                    def object = jsonSlurper.parseText(output)
+                    echo object
+                }
+            }         
+        }
+    }
+}
